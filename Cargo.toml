@@ -1,6 +1,9 @@
 [package]
+authors = ["Yohai Berreby (filsmick) <yohaiberreby@gmail.com>"]
 name = "temperature"
 version = "0.1.0"
-authors = ["Yohai Berreby (filsmick) <yohaiberreby@gmail.com>"]
 
-
+[dependencies]
+hyper = "0.6.16"
+serde = "0.6.1"
+serde_json = "0.6.0"

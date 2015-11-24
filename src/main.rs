@@ -1,21 +1,49 @@
-const STEFAN_BOLTZMANN_CONSTANT: f64 = 5.670367 / 100_000_000.0;
+use std::io;
 
-fn kelvin_temperature(albedo: f64, emissivity: f64, solar_radiation_watt_per_square_meter: f64) -> f64 {
-    assert!(0.0 <= albedo && albedo <= 1.0);
-    assert!(0.0 <= emissivity && emissivity <= 1.0);
+//
+// fn main() {
+//    let temp_c = kelvin_to_celcius(kelvin_temperature(0.6, 0.966, 1000.0));
+//    println!("Temp: {}°C", temp_c);
+//    println!("Constant: {}", STEFAN_BOLTZMANN_CONSTANT);
+// }
 
-    (
-        ((1.0 - albedo) * solar_radiation_watt_per_square_meter) /
-        (4.0 * emissivity * STEFAN_BOLTZMANN_CONSTANT)
-    ).powf(1.0 / 4.0)
+
+mod model;
+// mod materials;
+mod insolation;
+
+// use model::ModelParams;
+
+type Insolation = f64; // watts (power unit) per square meter
+type Emissivity = f64; // emissivity coefficient - a ratio (0 to 1, float)
+type Albedo = f64; //
+
+
+
+
+
+//
+// We'll have two big parts: input and model
+// model must be decoupled from input
+// input will call into model from main
+//
+
+
+pub enum Surface {
+    Water,
+    Steel,
+    PineWood,
+    Plastic,
 }
 
-fn kelvin_to_celcius(k: f64) -> f64 {
-    k - 273.15
+
+pub struct ModelParams {
+    pub insolation: Insolation,
+    pub surface: Surface,
 }
 
 fn main() {
-    let temp_c = kelvin_to_celcius(kelvin_temperature(0.6, 0.966, 1000.0));
-    println!("Temp: {}°C", temp_c);
-    println!("Constant: {}", STEFAN_BOLTZMANN_CONSTANT);
+    // let params = ModelParams {
+    //    insolation:
+    // };
 }
