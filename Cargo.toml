@@ -1,6 +1,6 @@
 [package]
 authors = ["Yohai Berreby (filsmick) <yohaiberreby@gmail.com>"]
-name = "climate-model"
+name = "climate"
 version = "0.1.0"
 
 [dependencies]
