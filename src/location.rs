@@ -24,7 +24,7 @@ impl Location {
 impl fmt::Display for Location {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f,
-               "{} ({:.4}° N, {:.4}° W)",
+               "{} (latitude : {:.4}, longitude : {:.4})",
                self.name,
                self.coords.lat,
                self.coords.long)
