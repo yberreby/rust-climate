@@ -1,12 +1,10 @@
-extern crate hyper;
-extern crate serde;
-extern crate serde_json;
-
-use hyper::{Url, Client};
+use std::fmt;
+use std::io::{self, Write};
 
 pub mod location;
-use location::GpsCoordinates;
+pub use location::GpsCoordinates;
 
+pub mod nrel;
 
 const NREL_API_KEY: &'static str = env!("NREL_API_KEY");
 
@@ -30,79 +28,7 @@ pub struct CompleteGhi {
     pub december: Ghi,
 }
 
-//
-// Retrieval process:
-// INPUT: GPS coordinates, month you're interested in
-// OUTPUT: insolation at the given month and location
-// * make an API call for the given GPS coords
-// * parse the JSON into a Rust struct
-// * pick the right month from that struct and return that
 
-
-pub fn average_ghi(location: &GpsCoordinates) -> CompleteGhi {
-    let client = Client::new();
-
-    let mut url = Url::parse("https://developer.nrel.gov/api/solar/solar_resource/v1.json")
-                      .unwrap();
-
-    println!("API KEY: !!! {} !!!", NREL_API_KEY);
-
-    url.set_query_from_pairs(&[("api_key", NREL_API_KEY),
-                               ("lat", &location.lat.to_string()),
-                               ("lon", &location.long.to_string())]);
-
-    println!("{:?} {}", url, url.serialize());
-
-    let res = client.get(url).send().unwrap();
-    println!("{:?}", res);
-    assert_eq!(res.status, hyper::Ok);
-
-
-    let json: serde_json::Value = serde_json::de::from_reader(res).unwrap();
-
-    average_ghi_from_json(&json)
-
-}
-
-/// Parse the JSON returned by NREL's API to extract the average Global Horizontal Irradiance (GHI)
-fn average_ghi_from_json(val: &serde_json::Value) -> CompleteGhi {
-    let avg_ghi = val.find_path(&["outputs", "avg_ghi"])
-                     .and_then(|x| x.as_object())
-                     .unwrap();
-
-    let months = avg_ghi.get("monthly").and_then(|x| x.as_object()).unwrap();
-
-    let get_month = |month| months.get(month).and_then(|x| x.as_f64()).unwrap();
-
-    CompleteGhi {
-        annual: avg_ghi.get("annual").and_then(|x| x.as_f64()).unwrap(),
-        january: get_month("jan"),
-        february: get_month("feb"),
-        march: get_month("mar"),
-        april: get_month("apr"),
-        may: get_month("may"),
-        june: get_month("jun"),
-        july: get_month("jul"),
-        august: get_month("aug"),
-        september: get_month("sep"),
-        october: get_month("oct"),
-        november: get_month("nov"),
-        december: get_month("dec"),
-    }
-}
-
-
-
-#[test]
-fn ghi_test() {
-    average_ghi(&location::BOSTON.coords);
-    average_ghi(&location::DENVER.coords);
-    average_ghi(&location::LOS_ANGELES.coords);
-    average_ghi(&location::MIAMI.coords);
-    average_ghi(&location::SEATTLE.coords);
-}
-use std::io::{self, Write};
-use std::fmt;
 
 
 pub enum Month {
@@ -208,7 +134,7 @@ Entrez le nombre correspondant à la ville désirée : "##);
     print!("Recherche de données d'ensoleillement dans la base NREL... ");
     flush();
 
-    let avg_ghi = average_ghi(&location.coords);
+    let avg_ghi = nrel::average_ghi(&location.coords);
     println!("ok.\n");
 
     print!("Entrez un mois (nombre de 1 à 12) : ");
@@ -220,7 +146,7 @@ Entrez le nombre correspondant à la ville désirée : "##);
     let idx = choice.trim().parse::<usize>().unwrap() - 1;
     let month = months.get(idx).unwrap();
 
-    println!("GHI à {} au mois de {} : {}",
+    println!("Global Horizonta Irradiance à {} au mois de '{}' : {} kWh/m2/jour",
              location,
              month,
              average_ghi_for_month(&avg_ghi, &month));
