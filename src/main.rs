@@ -6,6 +6,8 @@ pub use location::GpsCoordinates;
 
 pub mod nrel;
 
+pub mod material;
+
 const NREL_API_KEY: &'static str = env!("NREL_API_KEY");
 
 pub type Ghi = f64;
@@ -108,6 +110,11 @@ fn main() {
                       Month::November,
                       Month::December];
 
+    let materials = vec![material::SAND,
+                         material::GREEN_GRASS,
+                         material::STAINLESS_STEEL,
+                         material::CONCRETE];
+
     println!("Merci de choisir un lieu au sein de la liste suivante :\n");
 
     print!(r##"Villes américaines :
@@ -116,7 +123,7 @@ fn main() {
  3. Los Angeles (Sud-Ouest)
  4. Miami (Sud-Est)
  5. Denver (Centre)
-    
+
 Entrez le nombre correspondant à la ville désirée : "##);
     flush();
 
@@ -146,12 +153,32 @@ Entrez le nombre correspondant à la ville désirée : "##);
     let idx = choice.trim().parse::<usize>().unwrap() - 1;
     let month = months.get(idx).unwrap();
 
-    println!("Global Horizonta Irradiance à {} au mois de '{}' : {} kWh/m2/jour",
+    println!("Global Horizontal Irradiance à {} au mois de '{}' : {} kWh/m2/jour",
              location,
              month,
              average_ghi_for_month(&avg_ghi, &month));
 
-    println!("Données : {:?}", avg_ghi);
+    println!("Merci de choisir un matériau au sein de la liste suivante :\n");
+
+    print!(r##"Matériaux :
+ 1. Sable
+ 2. Herbe verte
+ 3. Acier inoxydable 
+ 4. Béton
+
+Entrez le nombre correspondant au matériau désiré : "##);
+    flush();
+
+
+    let mut choice = String::new();
+    io::stdin().read_line(&mut choice).unwrap();
+
+    let idx = choice.trim().parse::<usize>().unwrap() - 1;
+    let material = materials.get(idx).unwrap();
+
+    println!("Vous avez chosi le matériau : {}", material);
+
+    // println!("Données : {:?}", avg_ghi);
     // match month {
     //    Month::January => ghi.january,
     //    Month::February => ghi.february,
