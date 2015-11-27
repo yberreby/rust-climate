@@ -7,6 +7,7 @@ pub use location::GpsCoordinates;
 pub mod nrel;
 
 pub mod material;
+pub mod temperature;
 
 const NREL_API_KEY: &'static str = env!("NREL_API_KEY");
 
@@ -153,10 +154,12 @@ Entrez le nombre correspondant à la ville désirée : "##);
     let idx = choice.trim().parse::<usize>().unwrap() - 1;
     let month = months.get(idx).unwrap();
 
-    println!("Global Horizontal Irradiance à {} au mois de '{}' : {} kWh/m2/jour",
+    let ghi = average_ghi_for_month(&avg_ghi, &month);
+
+    println!("Global Horizontal Irradiance à {} au mois de '{}' : {:.2} kWh/m2/jour",
              location,
              month,
-             average_ghi_for_month(&avg_ghi, &month));
+             ghi);
 
     println!("Merci de choisir un matériau au sein de la liste suivante :\n");
 
@@ -177,6 +180,13 @@ Entrez le nombre correspondant au matériau désiré : "##);
     let material = materials.get(idx).unwrap();
 
     println!("Vous avez chosi le matériau : {}", material);
+
+    let temperature =
+        temperature::kelvin_to_celcius(temperature::kelvin_temperature(material.albedo,
+                                                                       material.emissivity,
+                                                                       ghi * 1000.0 / 24.0)); // 1366
+
+    println!("Température : {:.2}°C", temperature);
 
     // println!("Données : {:?}", avg_ghi);
     // match month {
