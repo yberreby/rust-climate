@@ -45,6 +45,8 @@ pub fn average_ghi(location: &GpsCoordinates) -> CompleteGhi {
     let mut url = Url::parse("https://developer.nrel.gov/api/solar/solar_resource/v1.json")
                       .unwrap();
 
+    println!("API KEY: !!! {} !!!", NREL_API_KEY);
+
     url.set_query_from_pairs(&[("api_key", NREL_API_KEY),
                                ("lat", &location.lat.to_string()),
                                ("lon", &location.long.to_string())]);
@@ -125,7 +127,7 @@ impl fmt::Display for Month {
                match *self {
                    Month::January => "janvier",
                    Month::February => "février",
-                   Month::March => "march",
+                   Month::March => "mars",
                    Month::April => "avril",
                    Month::May => "mai",
                    Month::June => "juin",
@@ -212,6 +214,7 @@ Entrez le nombre correspondant à la ville désirée : "##);
     print!("Entrez un mois (nombre de 1 à 12) : ");
     flush();
 
+    let mut choice = String::new();
     io::stdin().read_line(&mut choice).unwrap();
 
     let idx = choice.trim().parse::<usize>().unwrap() - 1;
