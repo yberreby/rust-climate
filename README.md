@@ -6,4 +6,4 @@ Il s'agit d'une implémentation minimale du modèle climatique décrit dans [How
 
 `rust-climate` s'appuie sur la base de données construite par le [National Renewable Energy Laboratory (NREL)](http://www.nrel.gov/) américain pour récupérer l'ensoleillement de lieux. Cette base de données est exposée au travers d'une [API](https://developer.nrel.gov/docs/solar/solar-resource-v1/) libre d'accès, permettant de connaître l'intensité du rayonnement solaire à des coordonnées GPS données.
 
-Une fois ces données collectées, le programme calcule le réchauffement solaire d'un matériau choisi par l'utilisateur situé à ces coordonnées.
+Une fois ces données collectées, le programme calcule la température théorique instantanée d'un objet constitué du matériau choisi par l'utilisateur situé à ces coordonnées en l'absence d'effet de serre, de vent, ou de tout autre facteur climatique. En tant que tel, il peut servir de base à la construction d'un modèle plus évolué prenant en compte ces divers facteurs.
