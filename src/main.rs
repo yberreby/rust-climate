@@ -132,8 +132,6 @@ Entrez le nombre correspondant à la ville désirée : "##);
     let mut choice = String::new();
     io::stdin().read_line(&mut choice).unwrap();
 
-    println!("");
-
     let idx = choice.trim().parse::<usize>().unwrap() - 1; // UX uses 1-indexed lists
     let location = cities.get(idx).unwrap();
 
@@ -143,7 +141,7 @@ Entrez le nombre correspondant à la ville désirée : "##);
     flush();
 
     let avg_ghi = nrel::average_ghi(&location.coords);
-    println!("ok.\n");
+    println!("ok.");
 
     print!("Entrez un mois (nombre de 1 à 12) : ");
     flush();
@@ -156,7 +154,7 @@ Entrez le nombre correspondant à la ville désirée : "##);
 
     let ghi = average_ghi_for_month(&avg_ghi, &month);
 
-    println!("Global Horizontal Irradiance à {} au mois de '{}' : {:.2} kWh/m2/jour",
+    println!("Global Horizontal Irradiance à {} au mois de '{}' : {:.2} kWh/m2/jour\n",
              location,
              month,
              ghi);
