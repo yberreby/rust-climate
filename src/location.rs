@@ -18,7 +18,6 @@ impl Location {
             },
         }
     }
-
 }
 
 impl fmt::Display for Location {

@@ -177,7 +177,7 @@ Entrez le nombre correspondant au matériau désiré : "##);
     let idx = choice.trim().parse::<usize>().unwrap() - 1;
     let material = materials.get(idx).unwrap();
 
-    println!("Vous avez chosi le matériau : {}", material);
+    println!("Vous avez choisi le matériau : {}", material);
 
     let temperature =
         temperature::kelvin_to_celcius(temperature::kelvin_temperature(material.albedo,

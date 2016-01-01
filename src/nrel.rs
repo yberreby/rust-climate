@@ -2,13 +2,11 @@ extern crate hyper;
 extern crate serde;
 extern crate serde_json;
 
-use std::io::{self, Write};
 use self::hyper::{Url, Client};
 
 use GpsCoordinates;
 use CompleteGhi;
 
-//
 // Retrieval process:
 // INPUT: GPS coordinates, month you're interested in
 // OUTPUT: insolation at the given month and location
@@ -68,12 +66,17 @@ fn average_ghi_from_json(val: &serde_json::Value) -> CompleteGhi {
 }
 
 
+#[cfg(test)]
+mod tests {
+    use location;
+    use super::average_ghi;
 
-#[test]
-fn ghi_test() {
-    average_ghi(&location::BOSTON.coords);
-    average_ghi(&location::DENVER.coords);
-    average_ghi(&location::LOS_ANGELES.coords);
-    average_ghi(&location::MIAMI.coords);
-    average_ghi(&location::SEATTLE.coords);
+    #[test]
+    fn ghi_test() {
+        average_ghi(&location::BOSTON.coords);
+        average_ghi(&location::DENVER.coords);
+        average_ghi(&location::LOS_ANGELES.coords);
+        average_ghi(&location::MIAMI.coords);
+        average_ghi(&location::SEATTLE.coords);
+    }
 }
