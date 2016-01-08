@@ -1,3 +1,5 @@
+extern crate chrono;
+
 use std::fmt;
 use std::io::{self, Write};
 
@@ -134,68 +136,71 @@ Entrez le nombre correspondant à la ville désirée : "##);
 
     println!("Vous avez choisi : {}\n", location);
 
-    print!("Recherche de données d'ensoleillement dans la base NREL... ");
-    flush();
-
-    let avg_ghi = nrel::average_ghi(&location.coords);
-    println!("ok.");
-
-    print!("Entrez un mois (nombre de 1 à 12) : ");
-    flush();
-
-    let mut choice = String::new();
-    io::stdin().read_line(&mut choice).unwrap();
-
-    let idx = choice.trim().parse::<usize>().unwrap() - 1;
-    let month = months.get(idx).unwrap();
-
-    let ghi = average_ghi_for_month(&avg_ghi, &month);
-
-    println!("Global Horizontal Irradiance à {} au mois de '{}' : {:.2} kWh/m2/jour\n",
-             location,
-             month,
-             ghi);
-
-    println!("Merci de choisir un matériau au sein de la liste suivante :\n");
-
-    print!(r##"Matériaux :
- 1. Sable
- 2. Herbe verte
- 3. Acier inoxydable 
- 4. Béton
-
-Entrez le nombre correspondant au matériau désiré : "##);
-    flush();
 
 
-    let mut choice = String::new();
-    io::stdin().read_line(&mut choice).unwrap();
 
-    let idx = choice.trim().parse::<usize>().unwrap() - 1;
-    let material = materials.get(idx).unwrap();
-
-    println!("Vous avez choisi le matériau : {}", material);
-
-    let temperature =
-        temperature::kelvin_to_celcius(temperature::kelvin_temperature(material.albedo,
-                                                                       material.emissivity,
-                                                                       ghi * 1000.0 / 24.0)); // 1366
-
-    println!("Température : {:.2}°C", temperature);
-
-    // println!("Données : {:?}", avg_ghi);
-    // match month {
-    //    Month::January => ghi.january,
-    //    Month::February => ghi.february,
-    //    Month::March => ghi.march,
-    //    Month::April => ghi.april,
-    //    Month::May => ghi.may,
-    //    Month::June => ghi.june,
-    //    Month::July => ghi.july,
-    //    Month::August => ghi.august,
-    //    Month::September => ghi.september,
-    //    Month::October => ghi.october,
-    //    Month::November => ghi.november,
-    //    Month::December => ghi.december,
+    //     print!("Recherche de données d'ensoleillement dans la base NREL... ");
+    //     flush();
+    //
+    //     let avg_ghi = nrel::average_ghi(&location.coords);
+    //     println!("ok.");
+    //
+    //     print!("Entrez un mois (nombre de 1 à 12) : ");
+    //     flush();
+    //
+    //     let mut choice = String::new();
+    //     io::stdin().read_line(&mut choice).unwrap();
+    //
+    //     let idx = choice.trim().parse::<usize>().unwrap() - 1;
+    //     let month = months.get(idx).unwrap();
+    //
+    //     let ghi = average_ghi_for_month(&avg_ghi, &month);
+    //
+    //     println!("Global Horizontal Irradiance à {} au mois de '{}' : {:.2} kWh/m2/jour\n",
+    //              location,
+    //              month,
+    //              ghi);
+    //
+    //     println!("Merci de choisir un matériau au sein de la liste suivante :\n");
+    //
+    //     print!(r##"Matériaux :
+    //  1. Sable
+    //  2. Herbe verte
+    //  3. Acier inoxydable
+    //  4. Béton
+    //
+    // Entrez le nombre correspondant au matériau désiré : "##);
+    //     flush();
+    //
+    //
+    //     let mut choice = String::new();
+    //     io::stdin().read_line(&mut choice).unwrap();
+    //
+    //     let idx = choice.trim().parse::<usize>().unwrap() - 1;
+    //     let material = materials.get(idx).unwrap();
+    //
+    //     println!("Vous avez choisi le matériau : {}", material);
+    //
+    //     let temperature =
+    //         temperature::kelvin_to_celcius(temperature::kelvin_temperature(material.albedo,
+    //                                                                        material.emissivity,
+    //                                                                        ghi * 1000.0 / 24.0)); // 1366
+    //
+    //     println!("Température : {:.2}°C", temperature);
+    //
+    //     // println!("Données : {:?}", avg_ghi);
+    //     // match month {
+    //     //    Month::January => ghi.january,
+    //     //    Month::February => ghi.february,
+    //     //    Month::March => ghi.march,
+    //     //    Month::April => ghi.april,
+    //     //    Month::May => ghi.may,
+    //     //    Month::June => ghi.june,
+    //     //    Month::July => ghi.july,
+    //     //    Month::August => ghi.august,
+    //     //    Month::September => ghi.september,
+    //     //    Month::October => ghi.october,
+    //     //    Month::November => ghi.november,
+    //     //    Month::December => ghi.december,
     // }
 }

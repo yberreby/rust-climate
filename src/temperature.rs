@@ -1,3 +1,4 @@
+use chrono::NaiveTime;
 
 const STEFAN_BOLTZMANN_CONSTANT: f64 = 5.670367 / 100_000_000.0;
 
@@ -22,6 +23,19 @@ pub fn kelvin_temperature(albedo: f64,
 
 // need day_of_year()
 // -> .ordinal() (1-indexed)
+
+// l'ensoleillement (insolation, english) est une mesure d'énergie
+// l'irradiance (irradiance, english) est une mesure de puissance
+
+/// Irradiance d'un point, en Watts par mètre carré, en fonction de la masse d'air
+/// devant être traversée par les rayons du Soleil.
+pub fn irradiance(air_mass: f64) -> f64 {
+    1.353 * 0.7f64.powf(air_mass.powf(0.678))
+}
+
+pub fn air_mass(zenith_angle: f64) -> f64 {
+    1.0 / zenith_angle.cos()
+}
 
 /// Angle zénithal en fonction de l'angle d'élévation.
 pub fn zenith_angle(elevation_angle: f64) -> f64 {
