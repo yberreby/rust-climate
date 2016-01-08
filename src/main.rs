@@ -31,9 +31,6 @@ pub struct CompleteGhi {
     pub december: Ghi,
 }
 
-
-
-
 pub enum Month {
     January,
     February,
