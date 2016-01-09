@@ -33,7 +33,9 @@ fn main() {
         date_time: FixedOffset::west(5 * 3600).ymd(2014, 6, 28).and_hms(12, 0, 9),
     };
 
-    let temperature: f64 = model::temperature(input);
+    let irradiance: f64 = model::irradiance(input);
 
-    println!("La température de l'objet est : {}°C", temperature);
+    print!("\n");
+    println!("l'irradiance est de {:.2} watts par mètre carré",
+             irradiance);
 }

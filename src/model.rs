@@ -1,7 +1,7 @@
 use chrono::*;
 use material::Material;
 pub use location::{Location, GpsCoordinates};
-use temperature::*;
+use temperature;
 
 pub struct ModelParams<Tz: TimeZone> {
     pub material: Material,
@@ -9,43 +9,43 @@ pub struct ModelParams<Tz: TimeZone> {
     pub date_time: DateTime<Tz>,
 }
 
-/// Temperature in degrees.
-pub fn temperature<Tz: TimeZone>(params: ModelParams<Tz>) -> f64 {
+/// Irradiance, en watts par mètre carré.
+pub fn irradiance<Tz: TimeZone>(params: ModelParams<Tz>) -> f64 {
     let ModelParams {
         material,
         location,
         date_time
     } = params;
 
-    println!("location: {}", location);
-
     let gmt_offset = date_time.offset().local_minus_utc();
-    println!("gmt offset (hours): {}", gmt_offset.num_hours());
     let day_of_year = date_time.ordinal();
-    println!("day of year: {}", day_of_year);
-    let eot = equation_of_time(day_of_year);
-    println!("equation of time: {}", eot);
-    let local_meridian_long = local_standard_meridian_longitude(gmt_offset.num_hours() as f64);
-    println!("local meridian longitude: {}", local_meridian_long);
-    let tcf = time_correction_factor(location.coords.long, local_meridian_long, eot);
-    println!("time correction factor: {}", tcf);
-    let solar_time = solar_time(date_time.hour() as f64, tcf);
-    println!("solar time (hours): {}", solar_time);
-    let hour_angle = hour_angle(solar_time);
-    println!("hour angle: {}", hour_angle);
-    let declination_angle = declination_angle(day_of_year);
-    println!("declination angle {}", declination_angle);
-    let elevation_angle = elevation_angle(declination_angle, location.coords.lat, hour_angle);
-    println!("elevation angle: {}", elevation_angle);
-    let zenith_angle = zenith_angle(elevation_angle);
-    println!("zenith angle: {}", zenith_angle);
-    let air_mass = air_mass(zenith_angle);
-    println!("air mass: {}", air_mass);
-    let irradiance = irradiance(air_mass);
-    println!("irradiance {}", irradiance);
+    let eot = temperature::equation_of_time(day_of_year);
+    let local_meridian_long =
+        temperature::local_standard_meridian_longitude(gmt_offset.num_hours() as f64);
+    let tcf = temperature::time_correction_factor(location.coords.long, local_meridian_long, eot);
+    let solar_time = temperature::solar_time(date_time.hour() as f64, tcf);
+    let hour_angle = temperature::hour_angle(solar_time);
+    let declination_angle = temperature::declination_angle(day_of_year);
+    let elevation_angle = temperature::elevation_angle(declination_angle,
+                                                       location.coords.lat,
+                                                       hour_angle);
+    let zenith_angle = temperature::zenith_angle(elevation_angle);
+    let air_mass = temperature::air_mass(zenith_angle);
+    let irradiance = temperature::irradiance(air_mass);
 
-    let kelvin = kelvin_temperature(material.albedo, material.emissivity, irradiance);
-    let degrees = kelvin_to_celcius(kelvin);
+    println!("emplacement : {}", location);
+    println!("décalage horaire : {} heure(s)", gmt_offset.num_hours());
+    println!("jour de l'année: {}", day_of_year);
+    println!("équation du temps: {:.2} minutes", eot);
+    println!("longitude du méridien local: {}°", local_meridian_long);
+    println!("facteur de correction de l'heure : {:.2} minutes", tcf);
+    println!("heure solaire : {:.2}h", solar_time);
+    println!("angle horaire : {:.4}°", hour_angle);
+    println!("angle de déclinaison de la Terre : {:.4}°",
+             declination_angle);
+    println!("angle d'élévation : {:.4}°", elevation_angle);
+    println!("angle zénithal : {:.4}°", zenith_angle);
+    println!("coefficient de masse atmosphérique : {:.4}", air_mass);
 
-    degrees
+    irradiance
 }
