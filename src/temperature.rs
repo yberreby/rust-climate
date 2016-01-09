@@ -33,6 +33,8 @@ pub fn irradiance(air_mass: f64) -> f64 {
     1.353 * 0.7f64.powf(air_mass.powf(0.678))
 }
 
+/// Masse d'air devant être traversée par les rayons du Soleil en fonction de l'angle
+/// zénithal.
 pub fn air_mass(zenith_angle: f64) -> f64 {
     1.0 / zenith_angle.cos()
 }
