@@ -16,11 +16,19 @@ pub fn temperature<Tz: TimeZone>(params: ModelParams<Tz>) -> f64 {
         location,
         date_time
     } = params;
+
+    println!("location: {}", location);
+
     let gmt_offset = date_time.offset().local_minus_utc();
+    println!("gmt offset (hours): {}", gmt_offset.num_hours());
     let day_of_year = date_time.ordinal();
+    println!("day of year: {}", day_of_year);
     let eot = equation_of_time(day_of_year);
+    println!("equation of time: {}", eot);
     let local_meridian_long = local_standard_meridian_longitude(gmt_offset.num_hours() as f64);
+    println!("local meridian longitude: {}", local_meridian_long);
     let tcf = time_correction_factor(location.coords.long, local_meridian_long, eot);
+    println!("time correction factor: {}", tcf);
     let solar_time = solar_time(date_time.hour() as f64, tcf);
     println!("solar time (hours): {}", solar_time);
     let hour_angle = hour_angle(solar_time);
