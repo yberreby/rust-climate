@@ -2,6 +2,9 @@ use chrono::NaiveTime;
 
 const STEFAN_BOLTZMANN_CONSTANT: f64 = 5.670367 / 100_000_000.0;
 
+
+
+
 pub fn kelvin_to_celcius(k: f64) -> f64 {
     k - 273.15
 }
@@ -70,6 +73,12 @@ pub fn time_correction_factor(longitude: f64,
                               equation_of_time: f64)
                               -> f64 {
     4.0 * (longitude - local_standard_meridian_longitude) + equation_of_time
+}
+
+/// Longitude du méridien standard local en fonction du décalage horaire par rapport
+/// au fuseau horaire GMT.
+pub fn local_standard_meridian_longitude(gmt_offset: f64) -> f64 {
+    15.0 * gmt_offset
 }
 
 /// Équation du temps en fonction du jour de l'année.
