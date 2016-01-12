@@ -1,29 +1,5 @@
 use chrono::NaiveTime;
 
-const STEFAN_BOLTZMANN_CONSTANT: f64 = 5.670367 / 100_000_000.0;
-
-pub fn kelvin_to_celcius(k: f64) -> f64 {
-    k - 273.15
-}
-
-/// Température, en kelvins, d'un objet, en fonction de son albedo, de son émissivité
-/// et de son irradiance par le Soleil.
-pub fn kelvin_temperature(albedo: f64, emissivity: f64, irradiance: f64) -> f64 {
-    assert!(0.0 <= albedo && albedo <= 1.0);
-    assert!(0.0 <= emissivity && emissivity <= 1.0);
-
-    (((1.0 - albedo) * irradiance) / (4.0 * emissivity * STEFAN_BOLTZMANN_CONSTANT)).powf(1.0 / 4.0)
-}
-
-
-// WIP
-
-// need day_of_year()
-// -> .ordinal() (1-indexed)
-
-// l'ensoleillement (insolation, english) est une mesure d'énergie
-// l'irradiance (irradiance, english) est une mesure de puissance
-
 /// Irradiance d'un point, en Watts par mètre carré, en fonction de la masse d'air
 /// devant être traversée par les rayons du Soleil.
 pub fn irradiance(air_mass: f64) -> f64 {
