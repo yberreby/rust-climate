@@ -30,11 +30,18 @@ pub fn irradiance<Tz: TimeZone>(params: ModelParams<Tz>) -> f64 {
     let air_mass = temperature::air_mass(zenith_angle);
     let irradiance = temperature::irradiance(air_mass);
 
+    println!("PARAMÈTRES D'ENTRÉE :");
     println!("emplacement : {}", location);
-    println!("décalage horaire : {} heure(s)", gmt_offset.num_hours());
-    println!("jour de l'année: {}", day_of_year);
-    println!("équation du temps: {:.2} minutes", eot);
-    println!("longitude du méridien local: {}°", local_meridian_long);
+    println!("heure et date : {}",
+             date_time.naive_local().format("%H:%M:%S %d/%m/%Y").to_string());
+    println!("décalage horaire : {} heure(s) par rapport à l'heure GMT",
+             gmt_offset.num_hours());
+    print!("\n");
+
+    println!("VARIABLES INTERMÉDIAIRES :");
+    println!("jour de l'année : {}", day_of_year);
+    println!("équation du temps : {:.2} minutes", eot);
+    println!("longitude du méridien local : {}°", local_meridian_long);
     println!("facteur de correction de l'heure : {:.2} minutes", tcf);
     println!("heure solaire : {:.2}h", solar_time);
     println!("angle horaire : {:.4}°", hour_angle);
