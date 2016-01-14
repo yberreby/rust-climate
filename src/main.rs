@@ -1,8 +1,5 @@
 extern crate chrono;
 
-#[cfg(test)]
-extern crate quickcheck;
-
 pub mod location;
 pub mod temperature;
 pub mod model;
