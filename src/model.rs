@@ -1,10 +1,8 @@
 use chrono::*;
-use material::Material;
 pub use location::{Location, GpsCoordinates};
 use temperature;
 
 pub struct ModelParams<Tz: TimeZone> {
-    pub material: Material,
     pub location: Location,
     pub date_time: DateTime<Tz>,
 }
@@ -12,7 +10,6 @@ pub struct ModelParams<Tz: TimeZone> {
 /// Irradiance, en watts par mètre carré.
 pub fn irradiance<Tz: TimeZone>(params: ModelParams<Tz>) -> f64 {
     let ModelParams {
-        material,
         location,
         date_time
     } = params;

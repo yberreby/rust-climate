@@ -1,5 +1,3 @@
-use chrono::NaiveTime;
-
 /// Irradiance d'un point, en Watts par mètre carré, en fonction de la masse d'air
 /// devant être traversée par les rayons du Soleil.
 pub fn irradiance(air_mass: f64) -> f64 {
