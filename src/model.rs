@@ -1,5 +1,5 @@
 use chrono::*;
-pub use location::{Location, GpsCoordinates};
+pub use location::GpsCoordinates;
 use temperature;
 
 pub struct ModelParams<Tz: TimeZone> {

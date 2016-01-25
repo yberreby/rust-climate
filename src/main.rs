@@ -4,7 +4,7 @@ pub mod location;
 pub mod temperature;
 pub mod model;
 
-pub use location::{Location, GpsCoordinates};
+pub use location::GpsCoordinates;
 use model::ModelParams;
 use chrono::*;
 use std::io::{self, Write, BufRead};
