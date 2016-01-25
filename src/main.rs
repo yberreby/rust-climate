@@ -7,7 +7,7 @@ pub mod model;
 pub use location::{Location, GpsCoordinates};
 use model::ModelParams;
 use chrono::*;
-use std::io::{self, Read, Write, BufRead};
+use std::io::{self, Write, BufRead};
 
 fn flush() {
     io::stdout().flush().unwrap();
