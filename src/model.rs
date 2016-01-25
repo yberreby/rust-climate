@@ -7,8 +7,23 @@ pub struct ModelParams<Tz: TimeZone> {
     pub date_time: DateTime<Tz>,
 }
 
+pub struct ModelOutput {
+    pub day_of_year: u32,
+    pub eot: f64,
+    pub local_meridian_long: f64,
+    pub time_correction_factor: f64,
+    pub solar_time: f64,
+    pub hour_angle: f64,
+    pub declination_angle: f64,
+    pub elevation_angle: f64,
+    pub zenith_angle: f64,
+    pub air_mass: f64,
+    pub irradiance: f64,
+}
+
+
 /// Irradiance, en watts par mètre carré.
-pub fn irradiance<Tz: TimeZone>(params: ModelParams<Tz>) -> f64 {
+pub fn run<Tz: TimeZone>(params: ModelParams<Tz>) -> ModelOutput {
     let ModelParams {
         coords,
         date_time
@@ -19,8 +34,10 @@ pub fn irradiance<Tz: TimeZone>(params: ModelParams<Tz>) -> f64 {
     let eot = temperature::equation_of_time(day_of_year);
     let local_meridian_long =
         temperature::local_standard_meridian_longitude(gmt_offset.num_hours() as f64);
-    let tcf = temperature::time_correction_factor(coords.long, local_meridian_long, eot);
-    let solar_time = temperature::solar_time(date_time.hour() as f64, tcf);
+    let time_correction_factor = temperature::time_correction_factor(coords.long,
+                                                                     local_meridian_long,
+                                                                     eot);
+    let solar_time = temperature::solar_time(date_time.hour() as f64, time_correction_factor);
     let hour_angle = temperature::hour_angle(solar_time);
     let declination_angle = temperature::declination_angle(day_of_year);
     let elevation_angle = temperature::elevation_angle(declination_angle, coords.lat, hour_angle);
@@ -28,26 +45,18 @@ pub fn irradiance<Tz: TimeZone>(params: ModelParams<Tz>) -> f64 {
     let air_mass = temperature::air_mass(zenith_angle);
     let irradiance = temperature::irradiance(air_mass);
 
-    // println!("PARAMÈTRES D'ENTRÉE :");
-    // println!("emplacement : {}", location);
-    // println!("heure et date : {}",
-    //          date_time.naive_local().format("%H:%M:%S %d/%m/%Y").to_string());
-    // println!("décalage horaire : {} heure(s) par rapport à l'heure GMT",
-    //          gmt_offset.num_hours());
-    // print!("\n");
 
-    println!("==== VARIABLES INTERMÉDIAIRES ====");
-    println!("jour de l'année : {}", day_of_year);
-    println!("équation du temps : {:.2} minutes", eot);
-    println!("longitude du méridien local : {}°", local_meridian_long);
-    println!("facteur de correction de l'heure : {:.2} minutes", tcf);
-    println!("heure solaire : {:.2}h", solar_time);
-    println!("angle horaire : {:.4}°", hour_angle);
-    println!("angle de déclinaison de la Terre : {:.4}°",
-             declination_angle);
-    println!("angle d'élévation : {:.4}°", elevation_angle);
-    println!("angle zénithal : {:.4}°", zenith_angle);
-    println!("coefficient de masse atmosphérique : {:.4}", air_mass);
-
-    irradiance
+    ModelOutput {
+        day_of_year: day_of_year,
+        eot: eot,
+        local_meridian_long: local_meridian_long,
+        time_correction_factor: time_correction_factor,
+        solar_time: solar_time,
+        hour_angle: hour_angle,
+        declination_angle: declination_angle,
+        elevation_angle: elevation_angle,
+        zenith_angle: zenith_angle,
+        air_mass: air_mass,
+        irradiance: irradiance,
+    }
 }

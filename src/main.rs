@@ -49,13 +49,29 @@ fn main() {
     };
 
     let start = Local::now();
-    let irradiance: f64 = model::irradiance(input);
+    let output = model::run(input);
     let duration = Local::now() - start;
 
+    println!("==== VARIABLES INTERMÉDIAIRES ====");
+    println!("jour de l'année : {}", output.day_of_year);
+    println!("équation du temps : {:.2} minutes", output.eot);
+    println!("longitude du méridien local : {}°",
+             output.local_meridian_long);
+    println!("facteur de correction de l'heure : {:.2} minutes",
+             output.time_correction_factor);
+    println!("heure solaire : {:.2}h", output.solar_time);
+    println!("angle horaire : {:.4}°", output.hour_angle);
+    println!("angle de déclinaison de la Terre : {:.4}°",
+             output.declination_angle);
+    println!("angle d'élévation : {:.4}°", output.elevation_angle);
+    println!("angle zénithal : {:.4}°", output.zenith_angle);
+    println!("coefficient de masse atmosphérique : {:.4}",
+             output.air_mass);
     print!("\n");
+
     println!("==== RÉSULTAT ====");
 
     println!("l'irradiance est de {:.2} watts par mètre carré (calculée en {} µs)",
-             irradiance,
+             output.irradiance,
              duration.num_microseconds().unwrap());
 }
