@@ -36,7 +36,7 @@ fn main() {
 
     // Model.
 
-    let local_time = DateTime::parse_from_str(&local_time_string, "%d/%m/%Y %H:%M:%S %z");
+    let local_time = DateTime::parse_from_str(&local_time_string, "%d/%m/%Y %H:%M:%S %z").unwrap();
 
     let coords = GpsCoordinates {
         lat: lat,
@@ -45,7 +45,7 @@ fn main() {
 
     let input = ModelParams {
         coords: coords,
-        date_time: FixedOffset::west(5 * 3600).ymd(2014, 6, 28).and_hms(12, 0, 9),
+        date_time: local_time,
     };
 
     let start = Local::now();
