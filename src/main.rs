@@ -36,7 +36,9 @@ fn main() {
 
     // Model.
 
-    let local_time = DateTime::parse_from_str(&local_time_string, "%d/%m/%Y %H:%M:%S %z").unwrap();
+    let local_time = DateTime::parse_from_str(&local_time_string,
+                                              "%d/%m/%Y %H:%M:%S %z")
+                         .unwrap();
 
     let coords = GpsCoordinates {
         lat: lat,
@@ -71,7 +73,8 @@ fn main() {
 
     println!("==== RÉSULTAT ====");
 
-    println!("l'irradiance est de {:.2} watts par mètre carré (calculée en {} µs)",
+    println!("l'irradiance est de {:.2} watts par mètre carré (calculée en \
+              {} µs)",
              output.irradiance,
              duration.num_microseconds().unwrap());
 }

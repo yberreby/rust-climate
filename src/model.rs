@@ -34,13 +34,17 @@ pub fn run<Tz: TimeZone>(params: ModelParams<Tz>) -> ModelOutput {
     let eot = temperature::equation_of_time(day_of_year);
     let local_meridian_long =
         temperature::local_standard_meridian_longitude(gmt_offset.num_hours() as f64);
-    let time_correction_factor = temperature::time_correction_factor(coords.long,
-                                                                     local_meridian_long,
-                                                                     eot);
-    let solar_time = temperature::solar_time(date_time.hour() as f64, time_correction_factor);
+    let time_correction_factor =
+        temperature::time_correction_factor(coords.long,
+                                            local_meridian_long,
+                                            eot);
+    let solar_time = temperature::solar_time(date_time.hour() as f64,
+                                             time_correction_factor);
     let hour_angle = temperature::hour_angle(solar_time);
     let declination_angle = temperature::declination_angle(day_of_year);
-    let elevation_angle = temperature::elevation_angle(declination_angle, coords.lat, hour_angle);
+    let elevation_angle = temperature::elevation_angle(declination_angle,
+                                                       coords.lat,
+                                                       hour_angle);
     let zenith_angle = temperature::zenith_angle(elevation_angle);
     let air_mass = temperature::air_mass(zenith_angle);
     let irradiance = temperature::irradiance(air_mass);

@@ -18,7 +18,10 @@ pub fn zenith_angle(elevation_angle: f64) -> f64 {
 }
 
 /// Angle d'élévation en fonction de l'angle de déclinaison, de la latitude et de l'angle horaire.
-pub fn elevation_angle(declination_angle: f64, latitude: f64, hour_angle: f64) -> f64 {
+pub fn elevation_angle(declination_angle: f64,
+                       latitude: f64,
+                       hour_angle: f64)
+                       -> f64 {
     assert!(-23.45 <= declination_angle && declination_angle <= 23.45);
     assert!(-90.0 <= latitude && latitude <= 90.0);
     assert!(-180.0 <= hour_angle && hour_angle <= 180.0);
@@ -33,7 +36,8 @@ pub fn elevation_angle(declination_angle: f64, latitude: f64, hour_angle: f64) -
 pub fn declination_angle(day_of_year: u32) -> f64 {
     assert!(1 <= day_of_year && day_of_year <= 366); // leap years
 
-    (23.45f64.to_radians().sin() * ((360.0 / 365.0) * (day_of_year - 81) as f64).to_radians().sin())
+    (23.45f64.to_radians().sin() *
+     ((360.0 / 365.0) * (day_of_year - 81) as f64).to_radians().sin())
         .asin()
         .to_degrees()
 }
@@ -68,5 +72,6 @@ pub fn local_standard_meridian_longitude(gmt_offset: f64) -> f64 {
 /// Équation du temps en fonction du jour de l'année, en minutes.
 pub fn equation_of_time(day_of_year: u32) -> f64 {
     let b = (360.0 / 365.0) * (day_of_year - 81) as f64;
-    9.87 * (2.0 * b).to_radians().sin() - 7.53 * b.to_radians().cos() - 1.5 * b.to_radians().sin()
+    9.87 * (2.0 * b).to_radians().sin() - 7.53 * b.to_radians().cos() -
+    1.5 * b.to_radians().sin()
 }
