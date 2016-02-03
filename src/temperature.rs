@@ -1,11 +1,12 @@
-/// Irradiance d'un point, en Watts par mètre carré, en fonction de la masse d'air
-/// devant être traversée par les rayons du Soleil.
+/// Éclairement énergétique solaire d'un point, en Watts par mètre carré,
+/// en fonction de la masse d'air devant être traversée par les rayons du
+/// Soleil.
 pub fn irradiance(air_mass: f64) -> f64 {
     1.353 * 0.7f64.powf(air_mass.powf(0.678)) * 1000.0
 }
 
-/// Masse d'air devant être traversée par les rayons du Soleil en fonction de l'angle
-/// zénithal.
+/// Masse d'air devant être traversée par les rayons du Soleil en fonction de
+/// l'angle zénithal.
 pub fn air_mass(zenith_angle: f64) -> f64 {
     assert!(0.0 <= zenith_angle && zenith_angle <= 90.0);
     1.0 / zenith_angle.to_radians().cos()
@@ -17,7 +18,8 @@ pub fn zenith_angle(elevation_angle: f64) -> f64 {
     90.0 - elevation_angle
 }
 
-/// Angle d'élévation en fonction de l'angle de déclinaison, de la latitude et de l'angle horaire.
+/// Angle d'élévation en fonction de l'angle de déclinaison, de la latitude et
+/// de l'angle horaire.
 pub fn elevation_angle(declination_angle: f64,
                        latitude: f64,
                        hour_angle: f64)
@@ -48,13 +50,15 @@ pub fn hour_angle(solar_time: f64) -> f64 {
     15.0 * (solar_time - 12.0)
 }
 
-/// Heure solaire en fonction de l'heure locale et du facteur de correction de l'heure.
+/// Heure solaire en fonction de l'heure locale et du facteur de correction de
+/// l'heure.
 pub fn solar_time(local_time: f64, time_correction_factor: f64) -> f64 {
     local_time + time_correction_factor / 60.0
 }
 
-/// Facteur de correction de l'heure, en minutes, en fonction de la longitude du point étudié,
-/// de la longitude du méridien standard local et de l'équation du temps.
+/// Facteur de correction de l'heure, en minutes, en fonction de la longitude
+/// du point étudié, de la longitude du méridien standard local et de
+/// l'équation du temps.
 pub fn time_correction_factor(longitude: f64,
                               local_standard_meridian_longitude: f64,
                               equation_of_time: f64)
@@ -63,8 +67,8 @@ pub fn time_correction_factor(longitude: f64,
     4.0 * (longitude - local_standard_meridian_longitude) + equation_of_time
 }
 
-/// Longitude du méridien standard local en fonction du décalage horaire par rapport
-/// au fuseau horaire GMT.
+/// Longitude du méridien standard local en fonction du décalage horaire par
+/// rapport au fuseau horaire GMT.
 pub fn local_standard_meridian_longitude(gmt_offset: f64) -> f64 {
     15.0 * gmt_offset
 }
