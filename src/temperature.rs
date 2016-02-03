@@ -12,7 +12,8 @@ pub fn irradiance(air_mass: f64) -> f64 {
 /// l'angle zénithal.
 pub fn air_mass(zenith_angle: f64) -> f64 {
     // `assert!` sert à vérifier qu'une condition est remplie.
-    // En l'occurrence, la fonction `air_mass` est définie pour x ∈ [0; 90].
+    // En l'occurrence, la fonction `air_mass` est définie pour x
+    // appartenant à [0; 90].
     assert!(0.0 <= zenith_angle && zenith_angle <= 90.0);
 
     // Les fonctions trigonométriques intégrées au langage Rust, ainsi qu'à
