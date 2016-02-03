@@ -72,8 +72,8 @@ fn main() {
 
     println!("==== RÉSULTAT ====");
 
-    println!("l'irradiance est de {:.2} watts par mètre carré (calculée en \
-              {} µs)",
+    println!("l'éclairement énergétique solaire est de {:.2} watts par mètre \
+              carré (calculé en {} µs)",
              output.irradiance,
              duration.num_microseconds().unwrap());
 }
