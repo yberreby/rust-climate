@@ -1,14 +1,23 @@
-/// Éclairement énergétique solaire d'un point, en Watts par mètre carré,
+/// Éclairement énergétique solaire d'un point, en watts par mètre carré,
 /// en fonction de la masse d'air devant être traversée par les rayons du
 /// Soleil.
 pub fn irradiance(air_mass: f64) -> f64 {
+    // `powf` est une contraction de "power" et "float", car on élève
+    // un nombre à une puissance réelle, et "float" signifie "nombre
+    // à virgule flottante" en anglais.
     1.353 * 0.7f64.powf(air_mass.powf(0.678)) * 1000.0
 }
 
 /// Masse d'air devant être traversée par les rayons du Soleil en fonction de
 /// l'angle zénithal.
 pub fn air_mass(zenith_angle: f64) -> f64 {
+    // `assert!` sert à vérifier qu'une condition est remplie.
+    // En l'occurrence, la fonction `air_mass` est définie pour x ∈ [0; 90].
     assert!(0.0 <= zenith_angle && zenith_angle <= 90.0);
+
+    // Les fonctions trigonométriques intégrées au langage Rust, ainsi qu'à
+    // nombre d'autres langages de programmation, font usage de radians et non
+    // de degrés. Il est donc nécessaire d'effectuer une conversion explicite.
     1.0 / zenith_angle.to_radians().cos()
 }
 
@@ -36,7 +45,8 @@ pub fn elevation_angle(declination_angle: f64,
 
 /// Angle de déclinaison en fonction du jour de l'année.
 pub fn declination_angle(day_of_year: u32) -> f64 {
-    assert!(1 <= day_of_year && day_of_year <= 366); // leap years
+    // Certaines années sont bissextiles et comportent 366 jours.
+    assert!(1 <= day_of_year && day_of_year <= 366);
 
     (23.45f64.to_radians().sin() *
      ((360.0 / 365.0) * (day_of_year - 81) as f64).to_radians().sin())
