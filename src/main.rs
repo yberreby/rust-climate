@@ -67,8 +67,7 @@ fn main() {
              output.declination_angle);
     println!("angle d'élévation : {:.4}°", output.elevation_angle);
     println!("angle zénithal : {:.4}°", output.zenith_angle);
-    println!("coefficient de masse atmosphérique : {:.4}",
-             output.air_mass);
+    println!("masse d'air : {:.4}", output.air_mass);
     print!("\n");
 
     println!("==== RÉSULTAT ====");
