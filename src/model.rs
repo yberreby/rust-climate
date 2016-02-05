@@ -1,6 +1,6 @@
 use chrono::*;
 pub use location::GpsCoordinates;
-use temperature;
+use irradiance;
 
 pub struct ModelParams<Tz: TimeZone> {
     pub coords: GpsCoordinates,
@@ -31,23 +31,23 @@ pub fn run<Tz: TimeZone>(params: ModelParams<Tz>) -> ModelOutput {
 
     let gmt_offset = date_time.offset().local_minus_utc();
     let day_of_year = date_time.ordinal();
-    let eot = temperature::equation_of_time(day_of_year);
+    let eot = irradiance::equation_of_time(day_of_year);
     let local_meridian_long =
-        temperature::local_standard_meridian_longitude(gmt_offset.num_hours() as f64);
+        irradiance::local_standard_meridian_longitude(gmt_offset.num_hours() as f64);
     let time_correction_factor =
-        temperature::time_correction_factor(coords.long,
-                                            local_meridian_long,
-                                            eot);
-    let solar_time = temperature::solar_time(date_time.hour() as f64,
-                                             time_correction_factor);
-    let hour_angle = temperature::hour_angle(solar_time);
-    let declination_angle = temperature::declination_angle(day_of_year);
-    let elevation_angle = temperature::elevation_angle(declination_angle,
-                                                       coords.lat,
-                                                       hour_angle);
-    let zenith_angle = temperature::zenith_angle(elevation_angle);
-    let air_mass = temperature::air_mass(zenith_angle);
-    let irradiance = temperature::irradiance(air_mass);
+        irradiance::time_correction_factor(coords.long,
+                                           local_meridian_long,
+                                           eot);
+    let solar_time = irradiance::solar_time(date_time.hour() as f64,
+                                            time_correction_factor);
+    let hour_angle = irradiance::hour_angle(solar_time);
+    let declination_angle = irradiance::declination_angle(day_of_year);
+    let elevation_angle = irradiance::elevation_angle(declination_angle,
+                                                      coords.lat,
+                                                      hour_angle);
+    let zenith_angle = irradiance::zenith_angle(elevation_angle);
+    let air_mass = irradiance::air_mass(zenith_angle);
+    let irradiance = irradiance::irradiance(air_mass);
 
 
     ModelOutput {

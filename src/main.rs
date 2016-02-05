@@ -1,7 +1,7 @@
 extern crate chrono;
 
 pub mod location;
-pub mod temperature;
+pub mod irradiance;
 pub mod model;
 
 pub use location::GpsCoordinates;
